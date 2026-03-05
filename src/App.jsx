@@ -1,29 +1,51 @@
- import Header from './header'
+ import { useState, Suspense } from 'react'
+import Header from './header'
 import Footer from './footer'
-import TiketInfo from './tickets' // <-- এই লাইনটি অবশ্যই লাগবে
+import TiketInfo from './tickets'
 import './App.css'
-import { Suspense } from 'react'
 
-// ডাটা ফেচ করার প্রমিজ
-const ticketPromiss = fetch('/ticket-info.json')
-                    .then(res => res.json())
+const ticketPromiss = fetch('/ticket-info.json').then(res => res.json())
 
 function App() {
+  const [inProgress, setInProgress] = useState(0)
+  const [resolved, setResolved] = useState(0)
+
+  // Click handler function
+  const handleTicketClick = (status) => {
+    if (status === 'in-progress') {
+      setInProgress(prev => prev + 1)
+    } else if (status === 'resolved') {
+      setResolved(prev => prev + 1)
+    }
+  }
+
   return (
     <>
-       
       <Header />
+      
+      {/* Stat Section - Duita Div Ek Line-e */}
+      <section className="flex justify-center gap-10 py-10 bg-gray-100">
+        <div className="bg-blue-600 text-white p-8 rounded-2xl w-64 text-center shadow-lg">
+          <h3 className="text-xl font-bold">In Progress</h3>
+          <p className="text-5xl mt-2 font-mono">{inProgress}</p>
+        </div>
 
-      <main className="container mx-auto py-10">
-        <h1 className="text-center text-3xl font-bold my-5">Vite + Reactsss</h1>
+        <div className="bg-indigo-600 text-white p-8 rounded-2xl w-64 text-center shadow-lg">
+          <h3 className="text-xl font-bold">Resolved</h3>
+          <p className="text-5xl mt-2 font-mono">{resolved}</p>
+        </div>
+      </section>
 
-       
-        <Suspense fallback={<h3 className="text-center">Tickets are coming .......</h3>}>
-          <TiketInfo ticketPromiss={ticketPromiss}></TiketInfo>
+      <main className="container mx-auto p-5">
+        <Suspense fallback={<h3>Loading tickets...</h3>}>
+          {/* TiketInfo-te function pathiye dite hobe */}
+          <TiketInfo 
+            ticketPromiss={ticketPromiss} 
+            onTicketClick={handleTicketClick} 
+          />
         </Suspense>
       </main>
 
-    
       <Footer />
     </>
   )
