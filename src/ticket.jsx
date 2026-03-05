@@ -4,7 +4,7 @@
   return (
     <div 
       onClick={() => onTicketClick(status)} 
-      className="card bg-base-100 w-full shadow-xl border border-base-200 hover:shadow-2xl transition-all cursor-pointer group"
+      className=" flex card bg-base-100 w-full shadow-xl border border-base-200 hover:shadow-2xl transition-all cursor-pointer group"
     >
       <div className="card-body p-6">
         {/* টপ সেকশন: ID এবং Priority Badge */}
