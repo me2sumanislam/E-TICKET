@@ -1,14 +1,12 @@
-import { use } from "react"
-
-use
+import { use } from "react" 
 export default function TiketInfo({ticketPromiss}){
 
     const tickets = use(ticketPromiss)
-     console.log(tickets.id);
+    //  console.log(tickets);
          
     return(
         <div>
-            <p>ID:</p>
+            <h3>Tickets:{tickets.length}</h3>
         </div>
     )
  }
