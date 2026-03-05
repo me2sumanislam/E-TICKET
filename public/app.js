@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import './App.css'; // সিএসএস লিঙ্ক
- import Ticket from '../src/Ticket';
+ import Ticket from '/Ticket';
 
 function App() {
   // ১. কাউন্টার স্টেট (আগের লজিক অনুযায়ী)
