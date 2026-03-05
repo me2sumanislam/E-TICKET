@@ -1,105 +1,180 @@
- import { useState, useEffect } from 'react';
-import { toast, ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
-import Ticket from './Ticket';
-import Header from './header';
-import Footer from './footer';
+ import { useState, useEffect } from "react";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import Ticket from "./Ticket";
+import Header from "./header";
+import Footer from "./footer";
 
 function App() {
-  const [tickets, setTickets] = useState([]); 
-  const [inProgressList, setInProgressList] = useState([]); 
-  const [resolvedCount, setResolvedCount] = useState(0); 
+  const [tickets, setTickets] = useState([]);
+  const [inProgressList, setInProgressList] = useState([]);
+  const [resolvedList, setResolvedList] = useState([]);
 
+  // Fetching ticket data from public folder + adding default status
   useEffect(() => {
-    fetch('/ticket-info.json')
-      .then(res => res.json())
-      .then(data => setTickets(data));
+    fetch("/ticket-info.json")
+      .then((res) => res.json())
+      .then((data) =>
+        setTickets(
+          data.map((ticket) => ({
+            ...ticket,
+            status: "open", // "open" | "in-progress" | "resolved"
+          }))
+        )
+      )
+      .catch((err) => console.error("Error loading tickets:", err));
   }, []);
 
-  const handleAddToProgress = (clickedTicket) => {
-    const isExist = inProgressList.find(item => item.id === clickedTicket.id);
-    
-    if (!isExist) {
-      setInProgressList([...inProgressList, clickedTicket]);
-      toast.info(`${clickedTicket.title} added to Progress!`);
-    } else {
-      toast.warning("This ticket is already in progress.");
+  // Add ticket to In Progress
+  const handleAddToProgress = (ticket) => {
+    const isAlreadyInProgress = inProgressList.some((item) => item.id === ticket.id);
+    const isAlreadyResolved = resolvedList.some((item) => item.id === ticket.id);
+
+    if (isAlreadyInProgress || isAlreadyResolved) {
+      toast.warning("This task is already in your status list!");
+      return;
     }
+
+    if (ticket.status !== "open") {
+      toast.info("This ticket is not available anymore.");
+      return;
+    }
+
+    setInProgressList((prev) => [...prev, ticket]);
+
+    // Update status in main tickets list
+    setTickets((prev) =>
+      prev.map((t) =>
+        t.id === ticket.id ? { ...t, status: "in-progress" } : t
+      )
+    );
+
+    toast.info(`Task Started: ${ticket.title}`);
   };
 
+  // Move from In Progress → Resolved
   const handleCompleteTask = (task) => {
-    const remainingInProgress = inProgressList.filter(item => item.id !== task.id);
-    setInProgressList(remainingInProgress);
-    const remainingTickets = tickets.filter(item => item.id !== task.id);
-    setTickets(remainingTickets);
-    setResolvedCount(prev => prev + 1);
-    toast.success("Task marked as Resolved!");
+    // Remove from in-progress
+    setInProgressList((prev) => prev.filter((item) => item.id !== task.id));
+
+    // Add to resolved
+    setResolvedList((prev) => [...prev, task]);
+
+    // Update status in main tickets list
+    setTickets((prev) =>
+      prev.map((t) =>
+        t.id === task.id ? { ...t, status: "resolved" } : t
+      )
+    );
+
+    toast.success("Task successfully resolved! 🎉");
   };
 
   return (
-    <div className="container mx-auto px-4 md:px-5">
+    <div className="container mx-auto px-4 md:px-5 font-sans bg-gray-50 min-h-screen pb-20">
       <Header />
-      <ToastContainer position="top-right" autoClose={2000} />
-      
- 
-      <section className="mt-10 md:mt-20 flex flex-col md:flex-row gap-6 md:gap-10 justify-center mb-10">
-        <div className="flex flex-col md:flex-row shadow-lg rounded-2xl overflow-hidden w-full md:w-auto">
-          <div className="w-full md:w-80 p-8 bg-blue-500 text-white text-center">
-            <div className="font-bold text-lg opacity-90 uppercase">In Progress</div>
-            <div className="text-5xl font-bold mt-2">{inProgressList.length}</div>
+      <ToastContainer position="top-right" autoClose={2500} theme="colored" />
+
+      {/* Counter Section */}
+      <section className="mt-10 mb-12">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="p-8 bg-blue-600 text-white text-center rounded-2xl shadow-lg transition-transform hover:scale-105">
+            <p className="font-bold uppercase tracking-widest text-sm opacity-90">In Progress</p>
+            <h2 className="text-6xl md:text-7xl font-black mt-3">{inProgressList.length}</h2>
           </div>
-          <div className="w-full md:w-80 p-8 bg-indigo-600 text-white text-center">
-            <div className="font-bold text-lg opacity-90 uppercase">Resolved</div>
-            <div className="text-5xl font-bold mt-2">{resolvedCount}</div>
+          <div className="p-8 bg-emerald-600 text-white text-center rounded-2xl shadow-lg transition-transform hover:scale-105">
+            <p className="font-bold uppercase tracking-widest text-sm opacity-90">Resolved</p>
+            <h2 className="text-6xl md:text-7xl font-black mt-3">{resolvedList.length}</h2>
           </div>
         </div>
       </section>
 
-    
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 mb-20">
-        
-        
-        <div className="order-2 lg:order-1 lg:col-span-8">
-          <h2 className="text-2xl font-bold mb-6 text-gray-800">Available Tickets</h2>
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-10">
+        {/* Left: Available Tickets */}
+        <div className="lg:col-span-8">
+          <h2 className="text-3xl font-black mb-8 text-slate-800">Customer Tickets</h2>
+
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {tickets.map(ticket => (
-              <Ticket 
-                key={ticket.id} 
-                ticket={ticket} 
-                onTicketClick={handleAddToProgress} 
+            {tickets.map((ticket) => (
+              <Ticket
+                key={ticket.id}
+                ticket={ticket}
+                onTicketClick={handleAddToProgress}
               />
             ))}
           </div>
-          {tickets.length === 0 && <p className="text-center py-10 text-gray-400">No tickets available.</p>}
+
+          {tickets.length === 0 && (
+            <div className="text-center py-20 bg-white rounded-3xl border-2 border-dashed border-gray-200 mt-8">
+              <p className="text-gray-400 italic text-lg">No tickets available to process.</p>
+            </div>
+          )}
         </div>
 
-        
-        <div className="order-1 lg:order-2 lg:col-span-4">
-          <div className="bg-white p-5 rounded-2xl shadow-xl border border-gray-100 sticky top-5">
-            <h3 className="text-xl font-bold mb-5 border-b pb-3 text-indigo-900">Task Status</h3>
+        {/* Right: Status Sidebar */}
+        <div className="lg:col-span-4 space-y-10">
+          {/* In Progress Tasks */}
+          <div className="bg-white p-6 rounded-2xl shadow-xl border border-gray-100">
+            <h3 className="text-2xl font-bold mb-6 text-slate-700 border-b pb-3">Active Tasks</h3>
             <div className="space-y-4">
-              {inProgressList.map((task, index) => (
-                <div key={task.id} className="flex justify-between items-center bg-blue-50 p-4 rounded-xl border border-blue-100">
-                  <div className="max-w-[150px] md:max-w-full">
-                    <p className="text-[10px] font-bold text-blue-400">#{index + 1}</p>
-                    <h4 className="font-bold text-sm text-gray-700 leading-tight">{task.title}</h4>
-                  </div>
-                  <button 
+              {inProgressList.map((task) => (
+                <div
+                  key={task.id}
+                  className="p-5 bg-blue-50 rounded-xl border border-blue-100 shadow-sm"
+                >
+                  <h4 className="font-bold text-slate-800 mb-4">{task.title}</h4>
+                  <button
                     onClick={() => handleCompleteTask(task)}
-                    className="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg text-xs font-bold transition-all shadow-md active:scale-95"
+                    className="w-full bg-green-600 hover:bg-green-700 text-white py-3 rounded-lg font-bold transition-all shadow-md active:scale-95"
                   >
-                    Complete
+                    Mark as Complete
                   </button>
                 </div>
               ))}
+
               {inProgressList.length === 0 && (
-                <p className="text-gray-400 text-center py-8 italic text-sm">No tasks in progress</p>
+                <p className="text-gray-400 italic text-center py-8 border border-dashed rounded-lg">
+                  No tasks in progress yet
+                </p>
+              )}
+            </div>
+          </div>
+
+          {/* Resolved Tasks */}
+          <div
+            className="relative bg-white p-6 rounded-2xl shadow-lg border border-gray-100 min-h-[280px] overflow-hidden"
+            style={{
+              backgroundImage: `url('https://www.svgrepo.com/show/404936/check-mark-button.svg')`,
+              backgroundRepeat: "no-repeat",
+              backgroundPosition: "bottom -20px right -20px",
+              backgroundSize: "140px",
+              backgroundBlendMode: "soft-light",
+            }}
+          >
+            <h3 className="text-2xl font-bold mb-6 text-slate-700 border-b pb-3 relative z-10">
+              Resolved Tasks
+            </h3>
+            <div className="relative z-10 space-y-3 max-h-64 overflow-y-auto pr-2">
+              {resolvedList.map((task, index) => (
+                <div
+                  key={task.id}
+                  className="py-3 border-b border-gray-100 last:border-0 flex items-start gap-3"
+                >
+                  <span className="text-emerald-600 font-black text-lg">{index + 1}.</span>
+                  <p className="text-slate-700 font-medium">{task.title}</p>
+                </div>
+              ))}
+
+              {resolvedList.length === 0 && (
+                <p className="text-slate-300 text-center py-12 italic">
+                  No tasks resolved yet. Keep going!
+                </p>
               )}
             </div>
           </div>
         </div>
       </div>
-      
+
       <Footer />
     </div>
   );

@@ -2,7 +2,7 @@
   return (
     <header>
       <nav>
-        {/* class এর পরিবর্তে React-এ className ব্যবহার করতে হয় */}
+ 
         <div className="navbar bg-base-100 shadow-sm">
           <div className="navbar-start">
             <div className="dropdown">
