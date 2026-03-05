@@ -1,57 +1,62 @@
  export default function Ticket({ ticket, onTicketClick }) {
+  
+  
   const { id, title, description, customer, priority, status, createdAt } = ticket;
 
-  return (
-    <div 
-      onClick={() => onTicketClick(status)} 
-      className=" flex card bg-base-100 w-full shadow-xl border border-base-200 hover:shadow-2xl transition-all cursor-pointer group"
-    >
-      <div className="card-body p-6">
-        {/* টপ সেকশন: ID এবং Priority Badge */}
-        <div className="flex justify-between items-start mb-2">
-          <div className="badge badge-outline badge-sm opacity-50 font-mono">#{id}</div>
-          <div className={`badge badge-sm font-bold ${
-            priority === 'High' ? 'badge-error' : 
-            priority === 'Medium' ? 'badge-warning' : 
-            'badge-success'
-          } text-white`}>
-            {priority}
-          </div>
-        </div>
+  // Status Badge Logic (গাঢ় কালার ব্যবহার করা হয়েছে)
+  const statusColors = {
+    open: "bg-green-100 text-green-700",
+    "in-progress": "bg-amber-100 text-amber-700",
+    resolved: "bg-blue-100 text-blue-700",
+  };
 
-        {/* টাইটেল এবং ডেসক্রিপশন */}
-        <h2 className="card-title text-gray-800 group-hover:text-primary transition-colors">
+  // Priority Color Logic (বেশি স্পষ্ট কালার)
+  const priorityColors = {
+    High: "text-red-600",
+    Medium: "text-amber-600",
+    Low: "text-emerald-600",
+  };
+
+  return (
+    <div
+      onClick={() => onTicketClick(status)}
+      className="bg-white rounded-xl border border-gray-200 shadow-sm hover:shadow-md transition-all cursor-pointer p-6 flex flex-col h-full"
+    >
+      {/* Header: Title and Status */}
+      <div className="flex justify-between items-start gap-4 mb-3">
+        <h2 className="text-lg font-bold text-slate-800 leading-tight">
           {title}
         </h2>
-        <p className="text-sm text-gray-500 line-clamp-2 mt-1">
-          {description}
-        </p>
+        <span className={`px-3 py-1 rounded-full text-[11px] font-bold flex items-center gap-1.5 whitespace-nowrap uppercase tracking-wide ${statusColors[status.toLowerCase()] || 'bg-gray-100 text-gray-700'}`}>
+          <span className="w-2 h-2 rounded-full bg-current"></span>
+          {status}
+        </span>
+      </div>
 
-        {/* কাস্টমার এবং ডেট ইনফো */}
-        <div className="divider my-2"></div> 
-        
-        <div className="flex justify-between items-center text-xs">
-          <div>
-            <span className="block uppercase opacity-50 font-bold">Customer</span>
-            <span className="font-semibold text-base-content">{customer}</span>
-          </div>
-          <div className="text-right">
-            <span className="block uppercase opacity-50 font-bold">Date</span>
-            <span className="font-semibold text-base-content">{createdAt}</span>
-          </div>
+      {/* Description */}
+      <p className="text-sm text-gray-500 line-clamp-2 mb-6 leading-relaxed">
+        {description}
+      </p>
+
+      {/* Footer: Layout fix for wrapping */}
+      <div className="flex flex-wrap items-center justify-between mt-auto pt-4 border-t border-gray-50 gap-y-3">
+        {/* Left Side: ID & Priority */}
+        <div className="flex items-center gap-3">
+          <span className="text-[11px] font-mono bg-gray-100 text-gray-600 px-2 py-0.5 rounded">
+            #{id}
+          </span>
+          <span className={`text-[10px] font-black uppercase tracking-widest ${priorityColors[priority] || 'text-gray-500'}`}>
+            {priority} Priority
+          </span>
         </div>
 
-        {/* কার্ড ফুটার: Status */}
-        <div className="card-actions justify-end mt-4">
-          <button className={`btn btn-xs btn-outline ${
-            status === 'resolved' ? 'btn-success' : 'btn-info'
-          } gap-2`}>
-            <span className="relative flex h-2 w-2">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-current opacity-75"></span>
-              <span className="relative inline-flex rounded-full h-2 w-2 bg-current"></span>
-            </span>
-            {status}
-          </button>
+        {/* Right Side: Customer & Date */}
+        <div className="flex items-center gap-4 text-gray-600">
+          <span className="text-xs font-semibold">{customer}</span>
+          <div className="flex items-center gap-1.5 text-gray-400 border-l pl-4 border-gray-200">
+             <span className="text-sm opacity-70">📅</span>
+             <span className="text-[11px] font-medium">{createdAt}</span>
+          </div>
         </div>
       </div>
     </div>
