@@ -1,0 +1,137 @@
+ [
+  {
+    "id": "TIC-1001",
+    "title": "Critical: Authentication Bypass on Mobile Login",
+    "description": "Security vulnerability detected where users can bypass OTP verification.",
+    "customer": "Md. Forhad Hossain Jibon",
+    "priority": "High",
+    "status": "In-Progress",
+    "createdAt": "2026-03-01T10:30:00Z"
+  },
+  {
+    "id": "TIC-1002",
+    "title": "UI Bug: Navigation Bar Overlapping Content",
+    "description": "On smaller screens, the sticky header covers the top section of the page.",
+    "customer": "Md. Akbor Alli",
+    "priority": "Medium",
+    "status": "Open",
+    "createdAt": "2026-03-01T11:45:00Z"
+  },
+  {
+    "id": "TIC-1003",
+    "title": "API: Stripe Webhook Failing to Process Payments",
+    "description": "Payment successful in Stripe but ticket status not updating in DB.",
+    "customer": "Rahat Hasan",
+    "priority": "High",
+    "status": "Open",
+    "createdAt": "2026-03-02T09:15:00Z"
+  },
+  {
+    "id": "TIC-1004",
+    "title": "Feature Request: Bulk Ticket Export (CSV/PDF)",
+    "description": "Admins need to download monthly reports for all resolved tickets.",
+    "customer": "Sifat Ahmed",
+    "priority": "Low",
+    "status": "Resolved",
+    "createdAt": "2026-03-02T14:20:00Z"
+  },
+  {
+    "id": "TIC-1005",
+    "title": "Performance: Excessive Database Queries on Load",
+    "description": "Dashboard is making 50+ API calls, causing high server latency.",
+    "customer": "Anika Kabir",
+    "priority": "High",
+    "status": "In-Progress",
+    "createdAt": "2026-03-03T08:00:00Z"
+  },
+  {
+    "id": "TIC-1006",
+    "title": "Assets: Broken Images in Customer Profile",
+    "description": "Uploaded profile pictures are returning 403 Forbidden errors.",
+    "customer": "Tanvir Rahman",
+    "priority": "Medium",
+    "status": "In-Progress",
+    "createdAt": "2026-03-03T12:00:00Z"
+  },
+  {
+    "id": "TIC-1007",
+    "title": "Enhancement: Add Dark Mode Toggle in Settings",
+    "description": "User requested a persistent dark/light mode switcher.",
+    "customer": "Mehedi Hasan",
+    "priority": "Low",
+    "status": "Open",
+    "createdAt": "2026-03-03T16:30:00Z"
+  },
+  {
+    "id": "TIC-1008",
+    "title": "Internal Error: WebSocket Connection Dropped",
+    "description": "Real-time ticket updates stop working after 5 minutes of inactivity.",
+    "customer": "Sakib Al Hasan",
+    "priority": "High",
+    "status": "Open",
+    "createdAt": "2026-03-04T10:10:00Z"
+  },
+  {
+    "id": "TIC-1009",
+    "title": "Accessibility: Missing Alt Tags on Dashboard Icons",
+    "description": "Screen readers cannot identify the status icons correctly.",
+    "customer": "Jubayer Ahmed",
+    "priority": "Low",
+    "status": "Resolved",
+    "createdAt": "2026-03-04T11:50:00Z"
+  },
+  {
+    "id": "TIC-1010",
+    "title": "Refactor: Update Tailwind Config to v4.0",
+    "description": "Modernize the styling configuration for better build performance.",
+    "customer": "Nusrat Jahan",
+    "priority": "Medium",
+    "status": "Resolved",
+    "createdAt": "2026-03-04T15:00:00Z"
+  },
+  {
+    "id": "TIC-1011",
+    "title": "Bug: Pagination Not Working on Ticket List",
+    "description": "Clicking page 2 always redirects to the home page.",
+    "customer": "Kamrul Islam",
+    "priority": "Medium",
+    "status": "In-Progress",
+    "createdAt": "2026-03-05T08:20:00Z"
+  },
+  {
+    "id": "TIC-1012",
+    "title": "Email: Welcome Mail Going to Spam Folder",
+    "description": "Need to configure SPF and DKIM records for the mail server.",
+    "customer": "Liton Das",
+    "priority": "High",
+    "status": "Open",
+    "createdAt": "2026-03-05T09:00:00Z"
+  },
+  {
+    "id": "TIC-1013",
+    "title": "Design: Update Font to Inter for Better Readability",
+    "description": "The current font looks blurry on low-resolution monitors.",
+    "customer": "Tahmina Akter",
+    "priority": "Low",
+    "status": "Resolved",
+    "createdAt": "2026-03-05T10:30:00Z"
+  },
+  {
+    "id": "TIC-1014",
+    "title": "Backend: Memory Leak in Ticket Search API",
+    "description": "Server RAM usage increases linearly with every search request.",
+    "customer": "Ariful Islam",
+    "priority": "High",
+    "status": "In-Progress",
+    "createdAt": "2026-03-05T11:15:00Z"
+  },
+  {
+    "id": "TIC-1015",
+    "title": "Integration: Slack Notification for New Tickets",
+    "description": "Send a message to #support channel whenever a high priority ticket is created.",
+    "customer": "Farhana Yeasmin",
+    "priority": "Medium",
+    "status": "Open",
+    "createdAt": "2026-03-05T13:00:00Z"
+  }
+]
