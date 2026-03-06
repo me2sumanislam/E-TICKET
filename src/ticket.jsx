@@ -57,7 +57,7 @@
       <div className={`h-1.5 w-full ${currentStatus.dot.replace("500", "600")}`}></div>
 
       <div className="p-5 md:p-6">
-        {/* Title + Status Badge */}
+        
         <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-3 mb-4">
           <h3 className="text-lg md:text-xl font-bold text-slate-800 group-hover:text-indigo-700 transition-colors line-clamp-2">
             {ticket.title}

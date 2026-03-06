@@ -27,12 +27,10 @@ function App() {
         });
 
         setTickets(normalizedTickets);
-
-        // localStorage থেকে পূর্বের প্রোগ্রেস লোড করা (প্রথমবার না থাকলে JSON থেকে)
+ 
         const savedInProgress = JSON.parse(localStorage.getItem("inProgressList")) || [];
         const savedResolved = JSON.parse(localStorage.getItem("resolvedList")) || [];
-
-        // শুধু যেগুলো এখনো valid (tickets-এ আছে)
+ 
         const validInProgress = normalizedTickets.filter(t => 
           savedInProgress.some(s => s.id === t.id) && t.status !== "resolved"
         );
@@ -46,7 +44,7 @@ function App() {
       .catch((err) => console.error("Error loading tickets:", err));
   }, []);
 
-  // প্রতিবার লিস্ট চেঞ্জ হলে localStorage-এ সেভ করা
+ 
   useEffect(() => {
     localStorage.setItem("inProgressList", JSON.stringify(inProgressList));
   }, [inProgressList]);
@@ -57,7 +55,7 @@ function App() {
 
   const handleAddToProgress = (ticket) => {
     if (ticket.status !== "open") {
-      return; // in-progress বা resolved হলে কিছু করবে না
+      return; 
     }
 
     const isAlreadyInList = 
@@ -89,7 +87,7 @@ function App() {
     toast.success("Task successfully resolved! 🎉");
   };
 
-  // Available-এ open + in-progress দেখাবে
+  
   const visibleTickets = tickets.filter(t => 
     t.status === "open" || t.status === "in-progress"
   );
@@ -99,13 +97,13 @@ function App() {
       <Header />
       <ToastContainer position="top-right" autoClose={2500} theme="colored" />
 
-      {/* Counter Section */}
+ 
 <section className="mt-10 mb-12">
   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
 
-    {/* In-Progress Card with Gradient + Pattern */}
+ 
     <div
-      className="relative p-8 text-white text-center rounded-2xl shadow-2xl transition-all duration-300 hover:scale-105 hover:shadow-3xl overflow-hidden"
+      className="relative p-8 text-white text-center rounded-2xl shadow-2xl transition-all duration-300  "
       style={{
         backgroundImage: `
           linear-gradient(135deg, rgba(107, 70, 193, 0.95) 0%, rgba(159, 122, 234, 0.85) 100%),
@@ -114,10 +112,10 @@ function App() {
         backgroundSize: 'cover, 120%',
         backgroundPosition: 'center, center',
         backgroundRepeat: 'no-repeat, repeat',
-        backgroundBlendMode: 'multiply', // বা 'overlay', 'soft-light', 'screen' চেষ্টা করতে পারো
+        backgroundBlendMode: 'multiply',  
       }}
     >
-      {/* Optional subtle overlay for better text readability */}
+      
       <div className="absolute inset-0 bg-black/10"></div>
 
       <div className="relative z-10">
@@ -130,13 +128,13 @@ function App() {
       </div>
     </div>
 
-    {/* Resolved Card with Gradient + Pattern */}
+ 
     <div
-      className="relative p-8 text-white text-center rounded-2xl shadow-2xl transition-all duration-300 hover:scale-105 hover:shadow-3xl overflow-hidden"
+      className="relative p-8 text-white text-center rounded-2xl shadow-2xl transition-all duration-300 "
       style={{
         backgroundImage: `
           linear-gradient(135deg, rgba(56, 161, 105, 0.95) 0%, rgba(104, 211, 145, 0.85) 100%),
-          url('public\vector1.png')
+          url('\vector1.png')
         `,
         backgroundSize: 'cover, 120%',
         backgroundPosition: 'center, center',
@@ -194,7 +192,7 @@ function App() {
                     onClick={() => handleCompleteTask(task)}
                     className="w-full bg-green-600 hover:bg-green-700 text-white py-3 rounded-lg font-bold transition-all shadow-md active:scale-95"
                   >
-                    Mark as Complete
+                  Complete
                   </button>
                 </div>
               ))}
